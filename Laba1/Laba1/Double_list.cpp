@@ -76,7 +76,7 @@ void swap_double_element(double_list** list, int n1, int n2) {
 		cout << "Invalid number\n";
 		return;
 	}
-	if (n1 > double_list_size(*list) - 1 || n2 > double_list_size(*list) - 1) {
+	if (n1 > double_list_size(*list) || n2 > double_list_size(*list)) {
 		cout << "List is too small\n";
 		return;
 	}
@@ -200,6 +200,8 @@ void double_menu() {
 			cout << "List is sucsessfully loaded to the file\n";
 			break;
 		case 5:
+			print_double_list(list);
+			cout << endl;
 			cout << "Enter position where you want to push: ";
 			cin >> num_menu;
 			cout << "Enter the data you want to enter: ";
