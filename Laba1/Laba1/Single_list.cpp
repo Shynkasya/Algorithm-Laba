@@ -172,6 +172,8 @@ void single_menu() {
 			cout << "List is sucsessfully loaded to the file\n";
 			break;
 		case 5:
+			print_list(list);
+			cout << endl;
 			cout << "Enter the data you want to enter: ";
 			cin >> data;
 			push_back(&list, data);
