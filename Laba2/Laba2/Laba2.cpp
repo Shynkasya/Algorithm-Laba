@@ -5,6 +5,7 @@ struct stack {
 	stack* link;
 };
 void push_stack(short data, stack** Top_Stack);
+void reverse_stack(stack** top_stack);
 void make_stack(stack** Top_Stack, int n) {
 	if (n > 0) {
 		short tmp;
@@ -38,22 +39,31 @@ void pop_element(stack** top_stack) {
 	*top_stack = (*top_stack)->link;
 	delete ptr;
 }
+//void swap_elements(stack** Top_Stack) {
+//	short tmp = (*Top_Stack)->data;
+//	stack* second_stack = NULL;
+//	while ((*Top_Stack) != NULL) {
+//		push_stack((*Top_Stack)->data, &second_stack);
+//		pop_element(*(&Top_Stack));
+//	}
+//	push_stack(tmp, *(&Top_Stack));
+//	tmp = second_stack->data;
+//	pop_element(&second_stack);
+//	while (second_stack->link != NULL) {
+//		push_stack(second_stack->data, *(&Top_Stack));
+//		pop_element(&second_stack);
+//	}
+//	pop_element(&second_stack);
+//	push_stack(tmp, *(&Top_Stack));
+//}
 void swap_elements(stack** Top_Stack) {
 	short tmp = (*Top_Stack)->data;
-	stack* second_stack = NULL;
-	while ((*Top_Stack) != NULL) {
-		push_stack((*Top_Stack)->data, &second_stack);
-		pop_element(*(&Top_Stack));
-	}
-	push_stack(tmp, *(&Top_Stack));
-	tmp = second_stack->data;
-	pop_element(&second_stack);
-	while (second_stack->link != NULL) {
-		push_stack(second_stack->data, *(&Top_Stack));
-		pop_element(&second_stack);
-	}
-	pop_element(&second_stack);
-	push_stack(tmp, *(&Top_Stack));
+	short tmp1;
+	reverse_stack(*(&Top_Stack));
+	tmp1 = (*Top_Stack)->data;
+	(*Top_Stack)->data = tmp;
+	reverse_stack(*(&Top_Stack));
+	(*Top_Stack)->data = tmp1;
 }
 void reverse_stack(stack** top_stack) {
 	stack* second_stack = NULL;
@@ -164,7 +174,7 @@ int main() {
 	make_stack(&list, num_menu);
 	print_stack(list);
 	cout << endl;
-	reverse_stack(&list);
+	swap_elements(&list);
 	print_stack(list);
 	return 0;
 }
