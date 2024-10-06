@@ -39,23 +39,6 @@ void pop_element(stack** top_stack) {
 	*top_stack = (*top_stack)->link;
 	delete ptr;
 }
-//void swap_elements(stack** Top_Stack) {
-//	short tmp = (*Top_Stack)->data;
-//	stack* second_stack = NULL;
-//	while ((*Top_Stack) != NULL) {
-//		push_stack((*Top_Stack)->data, &second_stack);
-//		pop_element(*(&Top_Stack));
-//	}
-//	push_stack(tmp, *(&Top_Stack));
-//	tmp = second_stack->data;
-//	pop_element(&second_stack);
-//	while (second_stack->link != NULL) {
-//		push_stack(second_stack->data, *(&Top_Stack));
-//		pop_element(&second_stack);
-//	}
-//	pop_element(&second_stack);
-//	push_stack(tmp, *(&Top_Stack));
-//}
 void swap_elements(stack** Top_Stack) {
 	short tmp = (*Top_Stack)->data;
 	short tmp1;
