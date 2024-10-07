@@ -1,7 +1,7 @@
 #pragma once
 #include<iostream>
 #include <fstream>
-#include <filesystem>
+//#include <filesystem>
 using namespace std;
 struct stack {
 	short data;
@@ -28,3 +28,27 @@ void delete_except_last(stack** top_stack);
 
 
 void stack_menu();
+
+
+struct queue_node {
+	short data;
+	queue_node* prev;
+};
+
+struct queue {
+	queue_node* begin;
+	queue_node* end;
+};
+
+
+void create_queue(queue* list, int n);
+void print_queue_rec(queue list);
+void print_queue(queue list);
+void delete_queue(queue* list);
+int count_queue_elements(queue list);
+double avegange_queue_elements(queue list);
+void min_max_queue(queue list);
+void element_before_min_queue(queue list);
+
+
+
