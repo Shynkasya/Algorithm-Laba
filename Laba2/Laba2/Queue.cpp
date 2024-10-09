@@ -181,7 +181,7 @@ void queue_menu() {
 			break;
 		case 4:
 			print_queue_to_file(list, filename);
-			cout << "Stack is sucsessfully loaded to the file\n";
+			cout << "Queue is sucsessfully loaded to the file\n";
 			break;
 		case 5:
 			print_queue(list);
