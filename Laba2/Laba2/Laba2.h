@@ -2,6 +2,11 @@
 #include<iostream>
 #include <fstream>
 //#include <filesystem>
+#include <Windows.h>
+
+
+extern HANDLE handle;
+
 using namespace std;
 struct stack {
 	short data;

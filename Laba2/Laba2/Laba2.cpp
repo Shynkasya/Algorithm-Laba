@@ -1,6 +1,8 @@
 #include"Laba2.h"
 
+HANDLE handle;
 int main() {
+	handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	bool quit = true;
 	int num_menu;
 	while (quit) {

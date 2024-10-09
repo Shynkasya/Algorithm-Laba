@@ -20,6 +20,12 @@ void read_stack_from_file(stack** list, char* filename) {
 	fin.close();
 }
 void push_stack(short data, stack** Top_Stack) {
+	if (*Top_Stack == NULL) {
+		(*Top_Stack) = new stack;
+		(*Top_Stack)->data = data;
+		(*Top_Stack)->link = NULL;
+		return;
+	}
 	stack* ptr = new stack;
 	ptr->data = data;
 	ptr->link = *Top_Stack;
@@ -35,7 +41,7 @@ void print_stack(stack* list) {
 		cout << "Stack is empty\n";
 		return;
 	}
-	cout << "Stack:\n";
+	//cout << "Stack:\n";
 	while (list->link != NULL) {
 		cout << list->data << " ";
 		list = list->link;
@@ -63,9 +69,41 @@ void pop_element(stack** top_stack) {
 
 
 
-
+void print_swap_stack(stack* Top_Stack, bool flag) {
+	if(flag) SetConsoleTextAttribute(handle, 12);
+	else  SetConsoleTextAttribute(handle, 10);
+	cout << Top_Stack->data << " ";
+	SetConsoleTextAttribute(handle, 7);
+	Top_Stack = Top_Stack->link;
+	while (Top_Stack->link != NULL) {
+		cout << Top_Stack->data << " ";
+		Top_Stack = Top_Stack->link;
+	}
+	if (flag) SetConsoleTextAttribute(handle, 10);
+	else  SetConsoleTextAttribute(handle, 12);
+	cout << Top_Stack->data;
+	SetConsoleTextAttribute(handle, 7);
+	cout << endl;
+}
 void swap_elements(stack** Top_Stack) {
-	if ((*Top_Stack) == NULL) return;
+	if ((*Top_Stack) == NULL) { 
+		cout << "Stack is empty\n";
+		return; 
+	}
+	if ((*Top_Stack)->link == NULL) {
+		cout << "Before swap: ";
+		SetConsoleTextAttribute(handle, 10);
+		cout << (*Top_Stack)->data << "\n";
+		SetConsoleTextAttribute(handle, 7);
+		cout << "After swap:  ";
+		SetConsoleTextAttribute(handle, 10);
+		cout << (*Top_Stack)->data << "\n";
+		SetConsoleTextAttribute(handle, 7);
+		return;
+	}
+	cout << "Before swap: ";
+	print_swap_stack((*Top_Stack), true);
+
 	short tmp = (*Top_Stack)->data;
 	short tmp1;
 	reverse_stack(*(&Top_Stack));
@@ -73,6 +111,8 @@ void swap_elements(stack** Top_Stack) {
 	(*Top_Stack)->data = tmp;
 	reverse_stack(*(&Top_Stack));
 	(*Top_Stack)->data = tmp1;
+	cout << "After swap:  ";
+	print_swap_stack((*Top_Stack), false);
 }
 void reverse_stack(stack** top_stack) {
 	if ((*top_stack) == NULL) return;
@@ -87,9 +127,15 @@ void delete_elements(stack** top_stack) {
 	if ((*top_stack) == NULL) return;
 	stack* second_stack = NULL;
 	while ((*top_stack) != NULL) {
+		cout << (*top_stack)->data << " ";
 		push_stack((*top_stack)->data, &second_stack);
 		pop_element(*(&top_stack));
-		if ((*top_stack) != NULL) pop_element(*(&top_stack));
+		if ((*top_stack) != NULL) {
+			SetConsoleTextAttribute(handle, 12);
+			cout << (*top_stack)->data << " ";
+			SetConsoleTextAttribute(handle, 7);
+			pop_element(*(&top_stack));
+		}
 	}
 	reverse_stack(&second_stack);
 	*top_stack = second_stack;
@@ -105,7 +151,12 @@ void max_element(stack** top_stack) {
 	}
 	while (second_stack != NULL) {
 		push_stack(second_stack->data, *(&top_stack));
-		if (second_stack->data == max) push_stack(0, *(&top_stack));
+		if (second_stack->data == max) {
+			SetConsoleTextAttribute(handle, 12);
+			cout << (*top_stack)->data << " ";
+			SetConsoleTextAttribute(handle, 7);
+			push_stack(0, *(&top_stack));
+		}else cout << (*top_stack)->data << " ";
 		pop_element(&second_stack);
 	}
 }
@@ -168,16 +219,19 @@ void stack_menu() {
 			cout << "Enter the quantity of element: ";
 			cin >> num_menu;
 			make_stack(&list, num_menu);
+			cout << "Stack: ";
 			print_stack(list);
 			cout << endl;
 			break;
 		case 2:
 			delete_stack(&list);
 			read_stack_from_file(&list, filename);
+			cout << "Stack: ";
 			print_stack(list);
 			cout << endl;
 			break;
 		case 3:
+			cout << "Stack: ";
 			print_stack(list);
 			cout << endl;
 			break;
@@ -186,28 +240,31 @@ void stack_menu() {
 			cout << "Stack is sucsessfully loaded to the file\n";
 			break;
 		case 5:
-			print_stack(list);
+			//print_stack(list);
 			swap_elements(&list);
-			cout << "\nAfter swap\n";
-			print_stack(list);
-			cout << endl;
+			//cout << "\nAfter swap\n";
+			//print_stack(list);
+			//cout << endl;
 			break;
 		case 6:
+			cout << "Before reverse: ";
 			print_stack(list);
+			cout << endl;
 			reverse_stack(&list);
-			cout << "\nAfter reverse\n";
+			cout << "After reverse:  ";
 			print_stack(list);
 			cout << endl;
 			break;
 		case 7:
-			print_stack(list);
+			//print_stack(list);
+			cout << "Before deleting: ";
 			delete_elements(&list);
-			cout << "\nAfter deleting\n";
+			cout << "\nAfter deleting:  ";
 			print_stack(list);
 			cout << endl;
 			break;
 		case 8:
-			print_stack(list);
+			//print_stack(list);
 			max_element(&list);
 			cout << "\nAfter function works\n";
 			print_stack(list);
