@@ -17,6 +17,23 @@ void create_queue(queue* list, int n) {
 		list->begin = ptr;
 	}
 }
+void create_queue_from_file(queue* list, char* filename) {
+	ifstream fin;
+	short data;
+	fin.open(filename, ifstream::in);
+	queue_node* ptr;
+	ptr = new queue_node;
+	fin >> ptr->data;
+	list->begin = ptr;
+	list->end = ptr;
+	while (!fin.eof()) {
+		ptr = new queue_node;
+		fin >> ptr->data;
+		list->begin->prev = ptr;
+		list->begin = ptr;
+	}
+	fin.close();
+}
 void print_queue_rec(queue list) {
 	if (list.end == list.begin) {
 		cout << "end <- " << list.end->data << " <- ";
@@ -32,6 +49,20 @@ void print_queue(queue list) {
 	}
 	print_queue_rec(list);
 	cout << "begin";
+}
+void print_queue_to_file(queue list, char* filename) {
+	if (list.end == NULL || list.begin == NULL) {
+		cout << "Queue is doesn't exist\n";
+		return;
+	}
+	ofstream fout;
+	fout.open(filename, ofstream::out | ofstream::trunc);
+	while (list.end != list.begin) {
+		fout << list.end->data << " ";
+		list.end = list.end->prev;
+	}
+	fout << list.end->data << " ";
+	fout.close();
 }
 void delete_queue(queue* list) {
 	if (list->end == NULL || list->begin == NULL) return;
@@ -101,4 +132,82 @@ void element_before_min_queue(queue list) {
 	}
 	end = end->prev;
 	cout << "Element before minimum: " << end->data;
+}
+
+
+
+
+
+
+void queue_menu() {
+	char filename[] = "File.txt";
+	queue list;
+	list.begin = NULL;
+	list.end = NULL;
+	bool quit = true;
+	int num_menu;
+	while (quit) {
+		system("cls");
+		cout << "1. Create queue\n";
+		cout << "2. Create queue from file\n";
+		cout << "3. Print queue\n";
+		cout << "4. Write queue to file\n";
+		cout << "5. Quantity of queue elements\n";
+		cout << "6. Arithmetic average of queue\n";
+		cout << "7. Minimum and maximum of queue\n";
+		cout << "8. Element before minimum\n";
+		cout << "9. Exit\n";
+		cout << "Choose oparetion: ";
+		cin >> num_menu;
+		switch (num_menu)
+		{
+		case 1:
+			delete_queue(&list);
+			cout << "Enter the quantity of element: ";
+			cin >> num_menu;
+			create_queue(&list, num_menu);
+			print_queue(list);
+			cout << endl;
+			break;
+		case 2:
+			delete_queue(&list);
+			create_queue_from_file(&list, filename);
+			print_queue(list);
+			cout << endl;
+			break;
+		case 3:
+			print_queue(list);
+			cout << endl;
+			break;
+		case 4:
+			print_queue_to_file(list, filename);
+			cout << "Stack is sucsessfully loaded to the file\n";
+			break;
+		case 5:
+			print_queue(list);
+			cout << "\nQueue have " << count_queue_elements(list) << "elements" << endl;
+			break;
+		case 6:
+			print_queue(list);
+			cout << "\nArithmetic average of queue is " << avegange_queue_elements(list) << endl;
+			break;
+		case 7:
+			print_queue(list);
+			cout << endl;
+			min_max_queue(list);
+			break;
+		case 8:
+			print_queue(list);
+			cout << endl;
+			element_before_min_queue(list);
+			break;
+		case 9:
+			quit = false;
+			break;
+		default:
+			cout << "Ty daun probui eshche raz\n";
+			break;
+		}
+		system("pause");
+	}
 }
