@@ -185,6 +185,7 @@ void deque_menu() {
 			cout << "Enter data: ";
 			cin >> data;
 			if (is_empty_deque(list)) cout << "Deque before: ";
+			cout << "Deque before: ";
 			print_deque(list);
 			cout << endl;
 			pop_element_to_deque_begin(&list, data);
@@ -196,6 +197,7 @@ void deque_menu() {
 			cout << "Enter data: ";
 			cin >> data;
 			if (is_empty_deque(list)) cout << "Deque before: ";
+			cout << "Deque before: ";
 			print_deque(list);
 			cout << endl;
 			pop_element_to_deque_end(&list, data);
