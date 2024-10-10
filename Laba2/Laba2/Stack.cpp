@@ -15,7 +15,7 @@ void read_stack_from_file(stack** list, char* filename) {
 	fin.open(filename, ifstream::in);
 	while (!fin.eof()) {
 		fin >> data;
-		push_stack(data, *(&list));
+		if(!fin.eof()) push_stack(data, *(&list));
 	}
 	fin.close();
 }
@@ -149,6 +149,8 @@ void max_element(stack** top_stack) {
 		if ((*top_stack)->data > max) max = (*top_stack)->data;
 		pop_element(*(&top_stack));
 	}
+	cout << "Before entering: ";
+	reverse_stack(&second_stack);
 	while (second_stack != NULL) {
 		push_stack(second_stack->data, *(&top_stack));
 		if (second_stack->data == max) {
@@ -159,20 +161,41 @@ void max_element(stack** top_stack) {
 		}else cout << (*top_stack)->data << " ";
 		pop_element(&second_stack);
 	}
+	cout << "\nAfter entering:  ";
+	reverse_stack(*(&top_stack));
+	second_stack = (*top_stack);
+	while (second_stack != NULL) {
+		if (second_stack->data == max) {
+			SetConsoleTextAttribute(handle, 12);
+		}
+		cout << second_stack->data << " ";
+		SetConsoleTextAttribute(handle, 7);
+		second_stack = second_stack->link;
+	}
 }
 void min_element(stack** top_stack) {
 	if ((*top_stack) == NULL) return;
 	stack* second_stack = NULL;
 	short min = (*top_stack)->data;
+	cout << "Before deleting: ";
 	while ((*top_stack) != NULL) {
 		push_stack((*top_stack)->data, &second_stack);
 		if ((*top_stack)->data < min) min = (*top_stack)->data;
 		pop_element(*(&top_stack));
 	}
+	reverse_stack(&second_stack);
+	(*top_stack) = NULL;
 	while (second_stack != NULL) {
-		if (second_stack->data != min) push_stack(second_stack->data, *(&top_stack));
+		if (second_stack->data != min) {
+			push_stack(second_stack->data, *(&top_stack));
+		}
+		else SetConsoleTextAttribute(handle, 12);
+		cout << second_stack->data << " ";
+		SetConsoleTextAttribute(handle, 7);
 		pop_element(&second_stack);
 	}
+	cout << endl;
+	reverse_stack(*(&top_stack));
 }
 void delete_except_first(stack** top_stack) {
 	if ((*top_stack) == NULL) return;
@@ -266,28 +289,30 @@ void stack_menu() {
 		case 8:
 			//print_stack(list);
 			max_element(&list);
-			cout << "\nAfter function works\n";
-			print_stack(list);
+			//cout << "\nAfter function works\n";
+			//print_stack(list);
 			cout << endl;
 			break;
 		case 9:
-			print_stack(list);
+			//print_stack(list);
 			min_element(&list);
-			cout << "\nAfter function works\n";
+			cout << "After deleting:  ";
 			print_stack(list);
 			cout << endl;
 			break;
 		case 10:
+			cout << "Before deleting: ";
 			print_stack(list);
 			delete_except_first(&list);
-			cout << "\nAfter deleting\n";
+			cout << "\nAfter deleting:  ";
 			print_stack(list);
 			cout << endl;
 			break;
 		case 11:
+			cout << "Before deleting: ";
 			print_stack(list);
 			delete_except_last(&list);
-			cout << "\nAfter deleting\n";
+			cout << "\nAfter deleting:  ";
 			print_stack(list);
 			cout << endl;
 			break;

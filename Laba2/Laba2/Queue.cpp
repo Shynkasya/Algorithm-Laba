@@ -5,7 +5,7 @@ void create_queue(queue* list, int n) {
 	ptr = new queue_node;
 	cout << "Enter element: ";
 	cin >> ptr->data;
-	//ptr->prev = NULL;
+	ptr->prev = NULL;
 	list->begin = ptr;
 	list->end = ptr;
 	n--;
@@ -24,11 +24,13 @@ void create_queue_from_file(queue* list, char* filename) {
 	queue_node* ptr;
 	ptr = new queue_node;
 	fin >> ptr->data;
+	ptr->prev = NULL;
 	list->begin = ptr;
 	list->end = ptr;
 	while (!fin.eof()) {
 		ptr = new queue_node;
 		fin >> ptr->data;
+		if (fin.eof()) break;
 		list->begin->prev = ptr;
 		list->begin = ptr;
 	}
@@ -36,19 +38,19 @@ void create_queue_from_file(queue* list, char* filename) {
 }
 void print_queue_rec(queue list) {
 	if (list.end == list.begin) {
-		cout << "end <- " << list.end->data << " <- ";
+		cout << "end -> " << list.end->data << " -> ";
 		return;
 	}
 	print_queue_rec({ list.begin, list.end->prev });
-	cout << list.end->data << " <- ";
+	cout << list.end->data << " -> ";
 }
 void print_queue(queue list) {
 	if (list.end == NULL || list.begin == NULL) {
-		cout << "Queue is doesn't exist\n";
+		cout << "Queue doesn't exist\n";
 		return;
 	}
 	print_queue_rec(list);
-	cout << "begin";
+	cout << "begin\n";
 }
 void print_queue_to_file(queue list, char* filename) {
 	if (list.end == NULL || list.begin == NULL) {
@@ -99,7 +101,7 @@ double avegange_queue_elements(queue list) {
 }
 void min_max_queue(queue list) {
 	if (list.end == NULL || list.begin == NULL) {
-		cout << "Queue is doesn't exist\n";
+		//cout << "Queue is doesn't exist\n";
 		return;
 	}
 	short min = list.end->data;
@@ -116,7 +118,7 @@ void min_max_queue(queue list) {
 }
 void element_before_min_queue(queue list) {
 	if (list.end == NULL || list.begin == NULL) {
-		cout << "Queue is doesn't exist\n";
+		//cout << "Queue is doesn't exist\n";
 		return;
 	}
 	queue_node* end;
@@ -130,8 +132,12 @@ void element_before_min_queue(queue list) {
 	while (end->data != min) {
 		end = end->prev;
 	}
+	if (end->prev == NULL) {
+		cout << "Element before minimum doesn't exist\n";
+		return;
+	}
 	end = end->prev;
-	cout << "Element before minimum: " << end->data;
+	cout << "Element before minimum: " << end->data << "\n";
 }
 
 
@@ -167,17 +173,17 @@ void queue_menu() {
 			cin >> num_menu;
 			create_queue(&list, num_menu);
 			print_queue(list);
-			cout << endl;
+			//cout << endl;
 			break;
 		case 2:
 			delete_queue(&list);
 			create_queue_from_file(&list, filename);
 			print_queue(list);
-			cout << endl;
+			//cout << endl;
 			break;
 		case 3:
 			print_queue(list);
-			cout << endl;
+			//cout << endl;
 			break;
 		case 4:
 			print_queue_to_file(list, filename);
@@ -185,21 +191,22 @@ void queue_menu() {
 			break;
 		case 5:
 			print_queue(list);
-			cout << "\nQueue have " << count_queue_elements(list) << "elements" << endl;
+			cout << "Queue have " << count_queue_elements(list) << " elements" << endl;
 			break;
 		case 6:
 			print_queue(list);
-			cout << "\nArithmetic average of queue is " << avegange_queue_elements(list) << endl;
+			cout << "Arithmetic average of queue is " << avegange_queue_elements(list) << endl;
 			break;
 		case 7:
 			print_queue(list);
-			cout << endl;
+			//cout << endl;
 			min_max_queue(list);
 			break;
 		case 8:
 			print_queue(list);
-			cout << endl;
+			//cout << endl;
 			element_before_min_queue(list);
+			//cout << endl;
 			break;
 		case 9:
 			quit = false;
