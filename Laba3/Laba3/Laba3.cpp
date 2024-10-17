@@ -28,11 +28,11 @@ void enter_tree(tree_node* node) {
 	node->right = NULL;
 }
 void insert(tree_node** tree, tree_node* node) {
-	if ((*tree)->surname < node->surname) {
+	if ((*tree)->surname > node->surname) {
 		if ((*tree)->left == NULL) (*tree)->left = node;
 		else insert(&(*tree)->left, node);
 	}
-	if ((*tree)->surname >= node->surname) {
+	if ((*tree)->surname <= node->surname) {
 		if ((*tree)->right == NULL) (*tree)->right = node;
 		else insert(&(*tree)->right, node);
 	}
@@ -58,9 +58,9 @@ void print_node(tree_node* node) {
 
 void print_tree(tree_node* node) {
 	if (node == NULL) return;
-	print_tree(node->right);
-	print_node(node);
 	print_tree(node->left);
+	print_node(node);
+	print_tree(node->right);
 }
 
 void print_preorder_tree(tree_node* node) {
@@ -140,7 +140,7 @@ void delete_node(tree_node** node) {
 int main() {
 	tree_node *tree = NULL;
 	make_binary_tree(&tree, 4);
-	//print_tree(tree);
+	print_tree(tree);
 	delete_node(&tree);
 	print_tree(tree);
 	/*if (tree == NULL) cout << "Tree is Null";
