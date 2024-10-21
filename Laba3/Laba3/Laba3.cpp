@@ -9,47 +9,47 @@ HANDLE handle;
 
 //enum color { RED, BLACK };
 
-void rotate_right(rb_tree** node, rb_tree** root) {
-	if ((*node)->parent == NULL) {
-		rb_tree* tmp = (*node)->left;
-		(*node)->left = tmp->right;
-		tmp->right = (*node);
-		(*node)->parent = tmp;
-		if ((*node)->left != NULL) (*node)->left->parent = (*node);
-		tmp->parent = NULL;
-		(*root) = tmp;
-		//(*node) = tmp;
-		return;
+rb_tree* rotate_right(rb_tree* y, rb_tree* root) {
+	rb_tree* x = y->left;
+	y->left = x->right;
+
+	if (x->right != nullptr) {
+		x->right->parent = y;
 	}
-	rb_tree* tmp = (*node)->parent;
-	tmp->right = (*node)->left;
-	(*node)->left = tmp->right->right;
-	tmp->right->right = (*node);
-	tmp->right->parent = tmp;
-	(*node)->parent = tmp->right;
-	if((*node)->left != NULL) (*node)->left->parent = (*node);
-	//(*node) = tmp->right;
+
+	x->parent = y->parent;
+	if (y->parent == nullptr) {
+		root = x;
+	}
+	else if (y == y->parent->left) {
+		y->parent->left = x;
+	}
+	else {
+		y->parent->right = x;
+	}
+	x->right = y;
+	y->parent = x;
+	return root;
 }
-void rotate_left(rb_tree** node, rb_tree ** root) {
-	if ((*node)->parent == NULL) {
-		rb_tree* tmp = (*node)->right;
-		(*node)->right = tmp->left;
-		tmp->left = (*node);
-		(*node)->parent = tmp;
-		if ((*node)->right != NULL)(*node)->right->parent = (*node);
-		tmp->parent = NULL;
-		(*root) = tmp;
-		//(*node) = tmp;
-		return;
+rb_tree* rotate_left(rb_tree* x, rb_tree* root) {
+	rb_tree* y = x->right;
+	x->right = y->left;
+	if (y->left != nullptr) {
+		y->left->parent = x;
 	}
-	rb_tree* tmp = (*node)->parent;
-	tmp->left = (*node)->right;
-	(*node)->right = tmp->left->left;
-	tmp->left->left = (*node);
-	tmp->left->parent = tmp;
-	(*node)->parent = tmp->left;
-	if((*node)->right != NULL) (*node)->right->parent = (*node);
-	//(*node) = tmp->left;
+	y->parent = x->parent;
+	if (x->parent == nullptr) {
+		root = y;
+	}
+	else if (x == x->parent->left) {
+		x->parent->left = y;
+	}
+	else {
+		x->parent->right = y;
+	}
+	y->left = x;
+	x->parent = y;
+	return root;
 }
 color return_color(rb_tree* node) {
 	if (node == NULL) return BLACK;
@@ -72,34 +72,40 @@ void balance_tree(rb_tree* node, rb_tree** root) {
 			uncle->parent->color = RED;
 			node = node->parent->parent;
 		}
-		/*else {
-			if (is_left_balance) {s
+		else {
+			if (is_left_balance) {
 				if (node == node->parent->right) {
 					node = node->parent;
-					rotate_left(&node, *&root);
+					(*root) = rotate_left(node, *root);
 				}
 				node->parent->color = BLACK;
 				node->parent->parent->color = RED;
-				rotate_right(&node->parent->parent, *&root);
+				(*root) = rotate_right(node->parent->parent, *root);
 			}
 			else {
 				if (node == node->parent->left) {
 					node = node->parent;
-					rotate_right(&node, *&root);
+					(*root) = rotate_right(node, *root);
 				}
 				node->parent->color = BLACK;
 				node->parent->parent->color = RED;
-				rotate_left(&node->parent->parent, *&root);
+				(*root) = rotate_left(node->parent->parent, *root);
 			}
-		}*/
+		}
 	}
 	(*root)->color = BLACK;
 }
-void update_rb_height(rb_tree** tree) {
+//void update_rb_height(rb_tree** tree) {
+//	if ((*tree) == NULL) return;
+//	if((*tree)->parent != NULL)	(*tree)->height = (*tree)->parent->height + 1;
+//	update_rb_height(&(*tree)->right);
+//	update_rb_height(&(*tree)->left);
+//}
+void update_rb_height(rb_tree** tree, int height = -1) {
 	if ((*tree) == NULL) return;
-	if((*tree)->parent != NULL)	(*tree)->height = (*tree)->parent->height + 1;
-	update_rb_height(&(*tree)->right);
-	update_rb_height(&(*tree)->left);
+	(*tree)->height = height + 1;
+	update_rb_height(&(*tree)->right, (*tree)->height);
+	update_rb_height(&(*tree)->left, (*tree)->height);
 }
 void insert_rb_node(rb_tree** tree, rb_tree* node) {
 	rb_tree* current_node = *tree;
