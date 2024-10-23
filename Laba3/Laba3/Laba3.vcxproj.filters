@@ -18,5 +18,16 @@
     <ClCompile Include="Laba3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rb_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="binary_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Laba3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
