@@ -30,7 +30,7 @@ void make_binary_tree(tree_node** root, int n);
 
 
 void print_node(tree_node* node);
-void update_height(tree_node** tree, int height = -1);
+//void update_height(tree_node** tree, int height);
 void print_structure(tree_node* node);
 void print_tree(tree_node* node);
 void print_preorder_tree(tree_node* node);
@@ -70,4 +70,28 @@ struct rb_tree {
 	rb_tree* parent;
 };
 
-void enter_rb_tree(rb_tree* node);
+
+
+
+rb_tree* rotate_right(rb_tree* y, rb_tree* root);
+rb_tree* rotate_left(rb_tree* x, rb_tree* root);
+color return_color(rb_tree* node);
+void balance_tree(rb_tree* node, rb_tree** root);
+
+
+void update_rb_height(rb_tree** tree, int height = -1);
+void insert_rb_node(rb_tree** tree, tree_node* bin_tree);
+void enter_rb_tree(rb_tree* rb_node, tree_node* node);
+
+
+void colorize_tree(rb_tree** root, tree_node* tree);
+void print_rb_node(rb_tree* node);
+void print_rb_tree(rb_tree* tree);
+
+
+rb_tree* rb_get_min(rb_tree* tree);
+rb_tree* delete_rb_node(rb_tree* node, rb_tree* root);
+rb_tree* fix_tree(rb_tree* node, rb_tree* root);
+
+
+void rb_tree_menu(tree_node* tree);
