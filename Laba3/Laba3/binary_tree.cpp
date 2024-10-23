@@ -1,7 +1,12 @@
 #include "Laba3.h"
 string Surnames[26] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
 
-
+void update_height(tree_node** tree, int height = -1) {
+	if ((*tree) == NULL) return;
+	(*tree)->height = height + 1;
+	update_height(&(*tree)->left, (*tree)->height);
+	update_height(&(*tree)->right, (*tree)->height);
+}
 void enter_rb_tree(rb_tree* node) {
 	/*cout << "Enter name: ";
 	cin >> node->surname;
@@ -37,7 +42,7 @@ void enter_tree(tree_node* node) {
 	node->right = NULL;
 }
 void insert(tree_node** tree, tree_node* node) {
-	node->height++;
+	//node->height++;
 	if ((*tree)->surname > node->surname) {
 		if ((*tree)->left == NULL) (*tree)->left = node;
 		else insert(&(*tree)->left, node);
@@ -54,9 +59,10 @@ void make_binary_tree(tree_node** root, int n) {
 		enter_tree(tmp);
 		if ((*root) == NULL) (*root) = tmp;
 		else insert(*&root, tmp);
-		cout << "Element is insert\n";
+		//cout << "Element is insert\n";
 		n--;
 	}
+	update_height(&(*root));
 }
 
 void print_node(tree_node* node) {
@@ -65,12 +71,7 @@ void print_node(tree_node* node) {
 	cout << "Experience: " << node->experience << endl;
 	cout << endl;
 }
-void update_height(tree_node** tree, int height) {
-	if ((*tree) == NULL) return;
-	update_height(&(*tree)->right, (*tree)->height);
-	(*tree)->height = height + 1;
-	update_height(&(*tree)->right, (*tree)->height);
-}
+
 void print_structure(tree_node* node) {
 	if (node == NULL) return;
 	print_structure(node->right);
@@ -214,6 +215,7 @@ tree_node* resort_tree_by_experience(tree_node** tree) {
 void tree_menu() {
 	char filename[] = "File.txt";
 	tree_node* tree = NULL;
+	rb_tree* rb_tree = NULL;
 	bool quit = true;
 	int num_menu;
 	while (quit) {
@@ -226,7 +228,8 @@ void tree_menu() {
 		cout << "6. Delete all tree\n";
 		cout << "7. Delete parts of the tree\n";
 		cout << "8. Sort tree by experience\n";
-		cout << "9. Exit\n";
+		cout << "9. Colorize tree\n";
+		cout << "10. Exit\n";
 		cout << "Choose oparetion: ";
 		cin >> num_menu;
 		switch (num_menu)
@@ -287,12 +290,15 @@ void tree_menu() {
 			{
 			case 1:
 				delete_right_tree(&tree);
+				cout << "Right branch is succesfully deleted\n";
 				break;
 			case 2:
 				delete_left_tree(&tree);
+				cout << "Left branch is succesfully deleted\n";
 				break;
 			case 3:
 				delete_node(&tree);
+				cout << "Node is succesfully deleted\n";
 				break;
 			default:
 				break;
@@ -303,6 +309,10 @@ void tree_menu() {
 			tree = resort_tree_by_experience(&tree);
 			break;
 		case 9:
+			rb_tree_menu(*&tree);
+			quit = false;
+			break;
+		case 10:
 			quit = false;
 			break;
 		default:
@@ -311,4 +321,5 @@ void tree_menu() {
 		}
 		system("pause");
 	}
+	delete_tree(&tree);
 }
