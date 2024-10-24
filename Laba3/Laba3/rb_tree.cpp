@@ -211,7 +211,7 @@ rb_tree* delete_rb_node(rb_tree* node, rb_tree* root) {
 		if (node->left == NULL) {
 			if (is_node_right_child) {
 				node->parent->right = node->right;
-				node->right->parent = node->parent;
+				if (node->right != NULL) node->right->parent = node->parent;
 			}
 			else {
 				node->parent->left = node->right;
@@ -224,7 +224,7 @@ rb_tree* delete_rb_node(rb_tree* node, rb_tree* root) {
 		if (node->right == NULL) {
 			if (is_node_right_child) {
 				node->parent->right = node->left;
-				node->left->parent = node->parent;
+				if (node->left != NULL) node->left->parent = node->parent;
 			}
 			else {
 				node->parent->left = node->left;
@@ -349,7 +349,23 @@ bool check_rb_tree(rb_tree* node, int& blackHeight) {
 
 	return true;
 }
-
+rb_tree* delete_node_helper(rb_tree* root){
+	string surname;
+	cout << "Enter the surname of person that you want delete: \n";
+	cin >> surname;
+	rb_tree* tmp;
+	tmp = *&root;
+	while (tmp != NULL && tmp->surname != surname) {
+		if (tmp->surname < surname) tmp = tmp->right;
+		else tmp = tmp->left;
+	}
+	if (tmp == NULL) {
+		cout << "This node is doesn't exist\n";
+		return root;
+	}
+	root = delete_rb_node(tmp, *&root);
+	return root;
+}
 void rb_tree_menu(tree_node* tree) {
 	char filename[] = "File.txt";
 	rb_tree* rb_tree_root = NULL;
@@ -387,10 +403,15 @@ void rb_tree_menu(tree_node* tree) {
 			system("pause");
 			break;
 		case 3:
-			//delete_rb_node();
+			print_rb_tree(rb_tree_root);
+			cout << "\n****************************\n";
+			rb_tree_root = delete_node_helper(*&rb_tree_root);
+			print_rb_tree(rb_tree_root);
 			system("pause");
 			break;
 		case 4:
+			print_rb_tree(rb_tree_root);
+			cout << "\n****************************\n";
 			tmp = new rb_tree;
 			enter_rb_node_from_console(*&tmp);
 			insert_rb_node(&rb_tree_root, tmp);
