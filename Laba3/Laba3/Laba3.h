@@ -3,9 +3,10 @@
 #include<iostream>
 #include<algorithm>
 #include <time.h>
+#include <fstream>
 #include <Windows.h>
 
-
+#define DEBUG
 extern HANDLE handle;
 //extern const string Surnames[26];
 
@@ -80,7 +81,7 @@ void balance_tree(rb_tree* node, rb_tree** root);
 
 
 void update_rb_height(rb_tree** tree, int height = -1);
-void insert_rb_node(rb_tree** tree, tree_node* bin_tree);
+void insert_rb_node(rb_tree** tree, tree_node* node);
 void enter_rb_tree(rb_tree* rb_node, tree_node* node);
 
 
