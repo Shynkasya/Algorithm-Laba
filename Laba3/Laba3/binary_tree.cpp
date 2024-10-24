@@ -29,15 +29,20 @@ void enter_rb_tree(rb_tree* node) {
 
 
 void enter_tree(tree_node* node) {
-	/*cout << "Enter name: ";
+#ifdef DEBUG
+	node->surname = Surnames[rand() % 26];
+	node->private_number = rand() % 100 + 1;
+	node->experience = rand() % 15 + 1;
+#else
+	cout << "Enter name: ";
 	cin >> node->surname;
 	cout << "Enter private number: ";
 	cin >> node->private_number;
 	cout << "Enter experience: ";
-	cin >> node->experience;*/
-	node->surname = Surnames[rand() % 26];
-	node->private_number = rand() % 100 + 1;
-	node->experience = rand() % 15 + 1;
+	cin >> node->experience;
+
+#endif // DEBUG
+
 	node->left = NULL;
 	node->right = NULL;
 }
@@ -212,8 +217,49 @@ tree_node* resort_tree_by_experience(tree_node** tree) {
 	return changed_tree;
 }
 
+void print_structure_to_file(tree_node* node, ofstream& fout) {
+	if (node == NULL) return;
+	print_structure_to_file(node->right, fout);
+	for (int i = 0; i < node->height; i++) fout << "    ";
+	fout << node->surname << "\n";
+	for (int i = 0; i < node->height; i++) fout << "    ";
+	fout << node->private_number << "\n";
+	for (int i = 0; i < node->height; i++) fout << "    ";
+	fout << node->experience << endl;
+	print_structure_to_file(node->left, fout);
+}
+void print_tree_to_file(tree_node* tree, char* filename) {
+	if (tree == NULL) {
+		cout << "Tree is empty\n";
+		return;
+	}
+	ofstream fout;
+	fout.open(filename, ofstream::out | ofstream::trunc);
+	print_structure_to_file(tree, fout);
+	fout.close();
+}
+void make_binary_tree_from_file(tree_node** tree, char* filename) {
+	ifstream fin;
+	short data;
+	fin.open(filename, ifstream::in);
+	tree_node* tmp;
+	while (!fin.eof()) {
+		tmp = new tree_node;
+		fin >> tmp->surname;
+		fin >> tmp->private_number;
+		fin >> tmp->experience;
+		tmp->left = NULL;
+		tmp->right = NULL;
+		if (fin.eof()) break;
+		if ((*tree) == NULL) (*tree) = tmp;
+		else insert(*&tree, tmp);
+	}
+	update_height(&(*tree));
+	fin.close();
+}
 void tree_menu() {
-	char filename[] = "File.txt";
+	char fileout[] = "output.txt";
+	char filein[] = "input.txt";
 	tree_node* tree = NULL;
 	rb_tree* rb_tree = NULL;
 	bool quit = true;
@@ -243,6 +289,10 @@ void tree_menu() {
 			cout << endl;
 			break;
 		case 2:
+			delete_tree(&tree);
+			make_binary_tree_from_file(&tree, filein);
+			print_structure(tree);
+			cout << endl;
 			break;
 		case 3:
 			system("cls");
@@ -271,8 +321,11 @@ void tree_menu() {
 			}
 			break;
 		case 4:
+			print_tree_to_file(tree, fileout);
 			break;
 		case 5:
+			print_structure(tree);
+			cout << endl;
 			cout << "Averange of experience: " << averange_ex(tree) << endl;
 			break;
 		case 6:
@@ -286,6 +339,8 @@ void tree_menu() {
 			cout << "3. Delete node\n";
 			cout << "Choose oparetion: ";
 			cin >> num_menu;
+			print_structure(tree);
+			cout << "\n*******************************\n";
 			switch (num_menu)
 			{
 			case 1:
@@ -304,9 +359,15 @@ void tree_menu() {
 				break;
 			}
 			cout << endl;
+			print_structure(tree);
+			cout << endl;
 			break;
 		case 8:
+			print_structure(tree);
+			cout << "\n*******************************\n";
 			tree = resort_tree_by_experience(&tree);
+			print_structure(tree);
+			cout << endl;
 			break;
 		case 9:
 			rb_tree_menu(*&tree);
