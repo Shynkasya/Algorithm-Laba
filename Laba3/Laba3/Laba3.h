@@ -6,14 +6,12 @@
 #include <fstream>
 #include <Windows.h>
 
-#define DEBUG
+//#define DEBUG
 extern HANDLE handle;
-//extern const string Surnames[26];
 
 using namespace std;
 
-struct tree_node {
-	//public:	
+struct tree_node {	
 	string surname;
 	int private_number;
 	int experience = 0;
@@ -21,8 +19,6 @@ struct tree_node {
 	tree_node* right;
 	tree_node* left;
 
-
-	//function
 };
 void enter_tree(tree_node* node);
 void insert(tree_node** tree, tree_node* node);
@@ -30,6 +26,7 @@ void make_binary_tree(tree_node** root, int n);
 
 
 
+//extern const string Surnames[26];
 void print_node(tree_node* node);
 //void update_height(tree_node** tree, int height);
 void print_structure(tree_node* node);

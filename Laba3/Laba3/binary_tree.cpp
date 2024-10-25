@@ -90,20 +90,20 @@ void print_structure(tree_node* node) {
 }
 void print_tree(tree_node* node) {
 	if (node == NULL) return;
-	print_tree(node->right);
-	print_node(node);
 	print_tree(node->left);
+	print_node(node);
+	print_tree(node->right);
 }
 void print_preorder_tree(tree_node* node) {
 	if (node == NULL) return;
 	print_node(node);
-	print_tree(node->left);
-	print_tree(node->right);
+	print_preorder_tree(node->left);
+	print_preorder_tree(node->right);
 }
 void print_postorder_tree(tree_node* node) {
 	if (node == NULL) return;
-	print_tree(node->left);
-	print_tree(node->right);
+	print_postorder_tree(node->left);
+	print_postorder_tree(node->right);
 	print_node(node);
 }
 
@@ -305,12 +305,18 @@ void tree_menu() {
 			switch (num_menu)
 			{
 			case 1:
+				print_structure(tree);
+				cout << "\n***********************\n";
 				print_tree(tree);
 				break;
 			case 2:
+				print_structure(tree);
+				cout << "\n***********************\n";
 				print_preorder_tree(tree);
 				break;
 			case 3:
+				print_structure(tree);
+				cout << "\n***********************\n";
 				print_postorder_tree(tree);
 				break;
 			case 4:
