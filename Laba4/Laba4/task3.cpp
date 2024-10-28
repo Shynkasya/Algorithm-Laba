@@ -170,6 +170,7 @@ void task3_menu(void (*add) (hash_node*, int, int)) {
 	}
 }
 void task3_help_menu() {
+	system("cls");
 	bool quit = true;
 	int num_menu;
 	while (quit) {
