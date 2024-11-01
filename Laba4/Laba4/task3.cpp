@@ -73,6 +73,19 @@ void print_hash_table3(hash_node* hash_table, int size) {
 		}
 	}
 }
+int search_node_3(hash_node* hash_table, int key, int size) {
+	int h = hash_function1(key, size);
+	for (int i = 0; i < size; i++)
+	{
+		if (hash_table[h].key == key) {
+			return h;
+		}
+		h++;
+		h = h % size;
+	}
+	cout << "Table haven't got such element\n";
+	return -1;
+}
 void delete_node3(hash_node* hash_table, int key, int size) {
 	int h = hash_function1(key, size);
 	for (int i = 0; i < size; i++)
@@ -123,7 +136,8 @@ void task3_menu(void (*add) (hash_node*, int, int)) {
 		cout << "4. Write hash table to file\n";
 		cout << "5. Add node\n";
 		cout << "6. Delete node\n";
-		cout << "7. Exit\n";
+		cout << "7. Search node\n";
+		cout << "8. Exit\n";
 		cout << "Choose oparetion: ";
 		cin >> num_menu;
 		switch (num_menu)
@@ -159,6 +173,14 @@ void task3_menu(void (*add) (hash_node*, int, int)) {
 			delete_node3(*&hash_table, num_menu, m);
 			break;
 		case 7:
+			cout << "Enter key of element: ";
+			cin >> num_menu;
+			num_menu = search_node_3(hash_table, num_menu, m);
+			if (num_menu != -1) {
+				cout << "Your element is on " << num_menu << " position\n";
+			}
+			break;
+		case 8:
 			quit = false;
 			cout << "\n\n";
 			break;
